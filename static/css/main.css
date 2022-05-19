@@ -1,0 +1,49 @@
+body {
+    background: Linen;
+    margin-top: 50px;
+    margin-left: 100px;
+    }
+
+tr {
+    background: lavender;
+    }
+
+td {
+      font-family: Georgia, serif;
+      font-size: 1em;
+      color: DarkSlateGray;
+    }
+
+h1 {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 2.5em;
+    color: FireBrick;
+    }
+
+p {
+    display: inline;
+  }
+
+p.filepath {
+    font-size:x-large;
+  }
+
+p.size {
+    font-size: large;
+  }
+
+p.type {
+    font-size: large;
+  }
+
+p.created {
+    font-size: large;
+  }
+
+p.copied {
+    font-size: large;
+  }
+
+div {
+    display: inline;
+  }
