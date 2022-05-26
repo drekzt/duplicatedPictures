@@ -4,6 +4,31 @@
   </head>
   <body>
     <h1>Doubled pictures</h1>
+    <h2>Folders which photos were found</h2>
+    <p class="folderslist"></p>
+      {% for item in items %}
+        {{item}}<br>
+      {% endfor %}
+    </p>
+    <h2>Doubled pictures/photos</h2>
+    <table class="photoslist">
+      {% for photocells in listofphotos %}
+      <tr>
+        <td>photocells length</td>
+        {% for photocell in photocells %}
+        <td>
+            <img src="data:image/jpeg;base64,{{photocell.data}}"></br>
+            <input type="checkbox" selected="{{photocell.p11}}" id="{{photocell._id}}" name="{{photocell._id}}" value="{{photocell._id}}">
+            <label class="filepath" for="{{photocell._id}}">{{photocell.Name}}</label></br>
+            <p class="filepath">{{photocell.Path}}</p><br>
+            Size <p class="size">{{photocell.Size[0]}}x{{photocell.Size[1]}}</p>px/<p class="size">{{photocell.fSize}}</p>bytes<br>
+            <p class="type">{{photocell.Format}} ({{photocell.Description}})</p><br>
+            Created at this place: <p class="created">{{photocell.fCreate}}</p><br>
+            Last modify: <p class="copied">{{photocell.fModify}}</p>
+        </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
     </table>
   </body>
 </html>

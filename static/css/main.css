@@ -1,11 +1,22 @@
+
 body {
     background: Linen;
     margin-top: 50px;
     margin-left: 100px;
+    display: inline;
     }
+
+button {
+  margin: 10px;
+}
+
+table { 
+  border: 1pt solid black;
+}
 
 tr {
     background: lavender;
+    border-bottom: 2pt solid black;
     }
 
 td {
@@ -24,7 +35,7 @@ p {
     display: inline;
   }
 
-p.filepath {
+.filepath {
     font-size:x-large;
   }
 
