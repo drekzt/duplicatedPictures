@@ -11,15 +11,20 @@
       {% endfor %}
     </p>
     <h2>Doubled pictures/photos</h2>
-    <table class="photoslist">
+    <table>
       {% for photocells in listofphotos %}
-      <tr>
-        <td>photocells length</td>
+      <tr class="border">
         {% for photocell in photocells %}
+          {% if loop.first %}
+            <td class="filepath">{{ loop.length }}</td>
+          {% endif %}
         <td>
             <img src="data:image/jpeg;base64,{{photocell.data}}"></br>
-            <input type="checkbox" selected="{{photocell.p11}}" id="{{photocell._id}}" name="{{photocell._id}}" value="{{photocell._id}}">
-            <label class="filepath" for="{{photocell._id}}">{{photocell.Name}}</label></br>
+            <label class="filepath" for="{{photocell._id}}">
+            <!--<a href="/toggle/{{ photocell._id }}">-->
+            <input type="checkbox" id="{{photocell._id}}" name="{{photocell._id}}" value="{{photocell._id}}">
+            <!--</a>-->
+            {{photocell.Name}}</label></br>
             <p class="filepath">{{photocell.Path}}</p><br>
             Size <p class="size">{{photocell.Size[0]}}x{{photocell.Size[1]}}</p>px/<p class="size">{{photocell.fSize}}</p>bytes<br>
             <p class="type">{{photocell.Format}} ({{photocell.Description}})</p><br>
