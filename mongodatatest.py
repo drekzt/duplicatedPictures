@@ -1,3 +1,5 @@
+import io
+import base64
 from library import *
 from pymongo import DESCENDING, ASCENDING
 from PIL import Image
@@ -8,25 +10,25 @@ def get_aggregated_photos():
     collection_name = dbname[PHOTOSCOLL]
 
     stage_group = { 
-        "$group": { 
-            "_id": "$" + SIMILARITYFIELD, 
-            "Count": { 
-                "$sum": 1 
+        '$group': { 
+            '_id': '$' + SIMILARITYFIELD, 
+            'Count': { 
+                '$sum': 1 
             } 
         } 
     }
 
     stage_filter = {
-        "$match": {
-            "Count": {
-                    "$gt": 1 
+        '$match': {
+            'Count': {
+                '$gt': 1 
             }
         }
     }
 
     stage_sort = {
-        "$sort": {
-            "Path": DESCENDING
+        '$sort': {
+            'Path': DESCENDING
         }
     }
 
@@ -68,8 +70,24 @@ def get_similar_photos():
 def get_pathes():
     collection_photos = dbname[PHOTOSCOLL]
     pathes = []
-    for path in collection_photos.distinct( "Path" ):
+    for path in collection_photos.distinct( 'Path' ):
         pathes.append(path)
     return pathes
+
+def getpicture(item):
+    tmode, tsize, tbytes = item['Thumb']
+    img = Image.frombytes(tmode, tsize, tbytes) 
+    obj = io.BytesIO()
+    try:
+        img.save(obj, format='JPEG')
+    except:
+        rgb_img = img.convert('RGB')
+        rgb_img.save(obj, format='JPEG')
+    obj.seek(0)
+    data = obj.read()
+    data = base64.b64encode(data)
+    data = data.decode()
+    return data
+
 
 #test = get_similar_photos()

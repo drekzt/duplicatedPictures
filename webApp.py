@@ -1,7 +1,5 @@
-import io
 from flask import Flask, render_template, redirect
 from PIL import Image
-import base64
 from mongodatatest import *
 import datetime as dt
 
@@ -9,28 +7,13 @@ app = Flask(__name__)
 
 removed = []
 
-def getpicture(item):
-    tmode, tsize, tbytes = item["Thumb"]
-    img = Image.frombytes(tmode, tsize, tbytes) 
-    obj = io.BytesIO()
-    try:
-        img.save(obj, format='JPEG')
-    except:
-        rgb_img = img.convert("RGB")
-        rgb_img.save(obj, format='JPEG')
-    obj.seek(0)
-    data = obj.read()
-    data = base64.b64encode(data)
-    data = data.decode()
-    return data
-
-@app.route("/", methods=['POST', 'GET'])
+@app.route('/', methods=['POST', 'GET'])
 def index():
     structure = get_similar_photos()
     for thesame in structure:
         for item in thesame:
             data = getpicture(item)
-            item["data"] = data
+            item['data'] = data
             item['fCreate'] = dt.datetime.fromtimestamp(item['fCreate']).strftime('%A %-d %B %Y %-H:%M:%S')
             item['fModify'] = dt.datetime.fromtimestamp(item['fModify']).strftime('%A %-d %B %Y %-H:%M:%S')
             #, p11 = submitdisabled]}

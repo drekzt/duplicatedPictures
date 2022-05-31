@@ -14,24 +14,60 @@
     <table>
       {% for photocells in listofphotos %}
       <tr class="border">
+        <form id="{{ loop.index0 }}">
+          <td class="filepath">
+            <button type=submit form="{{ loop.index0 }}">
         {% for photocell in photocells %}
           {% if loop.first %}
-            <td class="filepath">{{ loop.length }}</td>
+            Go to delete some/all of {{ loop.length }} pictures</button> 
+          </td>
           {% endif %}
-        <td>
-            <img src="data:image/jpeg;base64,{{photocell.data}}"></br>
-            <label class="filepath" for="{{photocell._id}}">
-            <!--<a href="/toggle/{{ photocell._id }}">-->
-            <input type="checkbox" id="{{photocell._id}}" name="{{photocell._id}}" value="{{photocell._id}}">
-            <!--</a>-->
-            {{photocell.Name}}</label></br>
-            <p class="filepath">{{photocell.Path}}</p><br>
-            Size <p class="size">{{photocell.Size[0]}}x{{photocell.Size[1]}}</p>px/<p class="size">{{photocell.fSize}}</p>bytes<br>
-            <p class="type">{{photocell.Format}} ({{photocell.Description}})</p><br>
-            Created at this place: <p class="created">{{photocell.fCreate}}</p><br>
-            Last modify: <p class="copied">{{photocell.fModify}}</p>
-        </td>
+            <td>
+              <img src="data:image/jpeg;base64,{{photocell.data}}"></br>
+              {% if loop.first or photocell.Name != loop.previtem.Name %}
+                <p class="filepath">{{photocell.Name}}</p><br>
+              {% else %}
+                <p class="filepath">-</p><br>
+              {% endif %}
+              {% if loop.first or photocell.Path != loop.previtem.Path %}
+                <p class="filepath">{{photocell.Path}}</p><br>
+              {% else %}
+                <p class="filepath">-</p><br>
+              {% endif %}
+                <p> Size
+                {% if loop.first or photocell.Size != loop.previtem.Size %}
+                  <p class="size">{{photocell.Size[0]}}x{{photocell.Size[1]}}</p> px /
+                {% else %}
+                  <p class="size">-</p>/
+                {% endif %}
+                {% if loop.first or photocell.fSize != loop.previtem.fSize %}
+                  <p class="size">{{photocell.fSize}}</p> bytes
+                {% else %}
+                  <p class="size">-</p>
+                {% endif %}
+              </p><br>
+              {% if loop.first or photocell.Format != loop.previtem.Format %}
+                <p class="type">{{photocell.Format}} ({{photocell.Description}})</p><br>
+              {% else %}
+                <p class="type">-</p><br>
+              {% endif %}
+              <p>
+                Created at this place: 
+                {% if loop.first or photocell.fCreate != loop.previtem.fCreate %}
+                  <p class="created">{{photocell.fCreate}}</p><br>
+                {% else %}
+                  <p class="created">-</p><br>
+                {% endif %}
+                Last modify: 
+                {% if loop.first or photocell.fCreate != loop.previtem.fCreate %}
+                  <p class="copied">{{photocell.fCreate}}</p>
+                {% else %}
+                  <p class="copied">-</p>
+                {% endif %}
+              </p>
+          </td>
         {% endfor %}
+        </form>
       </tr>
       {% endfor %}
     </table>

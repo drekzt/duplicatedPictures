@@ -29,21 +29,21 @@ def get_data(pathtocheck,collection):
                     created = os.path.getctime(fullpath)
                     if (svctr > 0):
                         item = {
-                        "Name" : file,
-                        "Path" : root,
-                        "Size" : boun,
-                        "Mean" : mean,
-                        "mVCTR" : mvctr,
-                        "Stddev" : sdev,
-                        "sVCTR" : svctr,
-                        "Format" : img.format,
-                        "Description" : img.format_description,
-                        "fSize" : size,
-                        "fCreate" : created,
-                        "fModify" : lastmod,
-                        "Thumb" : ( thumbmongo.mode, thumbmongo.size, thumbmongo.tobytes() ) }
+                        'Name' : file,
+                        'Path' : root,
+                        'Size' : boun,
+                        'Mean' : mean,
+                        'mVCTR' : mvctr,
+                        'Stddev' : sdev,
+                        'sVCTR' : svctr,
+                        'Format' : img.format,
+                        'Description' : img.format_description,
+                        'fSize' : size,
+                        'fCreate' : created,
+                        'fModify' : lastmod,
+                        'Thumb' : ( thumbmongo.mode, thumbmongo.size, thumbmongo.tobytes() ) }
                         collection.insert_one(item)
-                        print (" Size {}. Mean {}. Deviation {}. File {}. Path {} ({}/{}).".format(boun,mean,sdev,file,root,created,lastmod))
+                        print (' Size {}. Mean {}. Deviation {}. File {}. Path {} ({}/{}).'.format(boun,mean,sdev,file,root,created,lastmod))
                     else:
                         print ('\33[33m Not important {} \033[0m'.format(fullpath))
                 except:
