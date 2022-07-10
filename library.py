@@ -3,12 +3,14 @@ import pathlib
 from pathlib import Path
 
 ROOTDIR = '/'
+# ROOTDIR = Path.home().joinpath('Downloads','iCloud Photos','Test')
 # ROOTDIR = Path.home().joinpath('Downloads')
+# ROOTDIR = Path.home()
 PHOTOSCOLL= 'photos'
 SIMILARCOLL = 'similars'
 SIMILARITYFIELD = 'Stddev'
 SIMILARITYFACTOR = 'sVCTR'
-SIMILARITYSCALE = 0.1
+SIMILARITYSCALE = 0.2
 
 #STDDEVCONST = 'Stddev'
 #MEANCONST = 'Mean'

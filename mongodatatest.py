@@ -68,11 +68,19 @@ def get_similar_photos():
     return images
 
 def get_pathes():
-    collection_photos = dbname[PHOTOSCOLL]
+    collection_photos = dbname[SIMILARCOLL]
     pathes = []
     for path in collection_photos.distinct( 'Path' ):
         pathes.append(path)
     return pathes
+
+def get_pathes_from_structure(structure,fulllistcnt):
+    pathes = ['25 items from {}'.format(fulllistcnt)]
+    for item in structure:
+        for subitem in item:
+            if subitem['Path'] not in pathes:
+                pathes.append(subitem['Path'])
+    return sorted(pathes)
 
 def getpicture(item):
     tmode, tsize, tbytes = item['Thumb']

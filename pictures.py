@@ -8,17 +8,17 @@ from pymongo import DESCENDING, ASCENDING
 import re 
 
 def get_data(pathtocheck,collection):
-    ret=[]
     for root, _, files in os.walk(pathtocheck):
-        if not re.match('.*/\..*|^/dev.*|^/boot.*|^/opt.*|^/proc.*|^/run.*|^/tmp.*|^/usr.*|^/var.*',root):
+        if not re.match('.*/\..*|^/dev.*|^/boot.*|^/opt.*|^/proc.*|^/run.*|^/tmp.*|^/usr.*|^/var.*|.*videothumbs|.*audiothumbs|.*Adobe Photoshop.*',root):
             for file in files:
                 fullpath=os.path.join(root,file)
                 try: 
                     img = Image.open(fullpath)
-                    stat = ImageStat.Stat(img)
+                    # stat = ImageStat.Stat(img)
                     thumb =  img.copy()
-                    thumb.thumbnail((300, 300,), Image.ANTIALIAS)
+                    thumb.thumbnail((300, 300,), Image.LANCZOS)
                     thumbmongo = thumb.copy()
+                    stat = ImageStat.Stat(thumbmongo)
                     boun = [img.width, img.height]
                     mean = stat.mean
                     mvctr = vector(stat.mean)
@@ -43,7 +43,8 @@ def get_data(pathtocheck,collection):
                         'fModify' : lastmod,
                         'Thumb' : ( thumbmongo.mode, thumbmongo.size, thumbmongo.tobytes() ) }
                         collection.insert_one(item)
-                        print (' Size {}. Mean {}. Deviation {}. File {}. Path {} ({}/{}).'.format(boun,mean,sdev,file,root,created,lastmod))
+                        print (' Mean {}-{}. Dev {}-{}. {}'.format(mean,mvctr,sdev,svctr,file))
+                        # print (' Size {}. Mean {}. Deviation {}. File {}. Path {} ({}/{}).'.format(boun,mean,sdev,file,root,created,lastmod))
                     else:
                         print ('\33[33m Not important {} \033[0m'.format(fullpath))
                 except:
@@ -97,14 +98,21 @@ def similarity(collection_name):
         pass
     return simmresult
 
-dbname = get_database()
-dbname.drop_collection(PHOTOSCOLL)
-collection_name = dbname[PHOTOSCOLL]
-get_data(ROOTDIR,collection_name)
-collection_name.create_index([(SIMILARITYFIELD, 1)])
-collection_name.create_index([(SIMILARITYFACTOR, 1)])
+def simCollRecreate():
+    dbname = get_database()
+    collection_name = dbname[PHOTOSCOLL]
+    items2 = similarity(collection_name)
+    dbname.drop_collection(SIMILARCOLL)
+    collection_name2 = dbname[SIMILARCOLL]
+    collection_name2.insert_many(items2)
 
-items2 = similarity(collection_name)
-dbname.drop_collection(SIMILARCOLL)
-collection_name2 = dbname[SIMILARCOLL]
-collection_name2.insert_many(items2)
+def photosCollRecreate():
+    dbname = get_database()
+    dbname.drop_collection(PHOTOSCOLL)
+    collection_name = dbname[PHOTOSCOLL]
+    get_data(ROOTDIR,collection_name)
+    collection_name.create_index([(SIMILARITYFIELD, 1)])
+    collection_name.create_index([(SIMILARITYFACTOR, 1)])
+
+photosCollRecreate()
+simCollRecreate()
