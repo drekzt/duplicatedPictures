@@ -67,20 +67,18 @@ def vector(triplet):
 
 def comparetriple(prev, current, which, acceptdiff):
     try:
-        field0 = pow(current[which][0]-prev[which][0],2)
-        field1 = pow(current[which][1]-prev[which][1],2)
-        field2 = pow(current[which][2]-prev[which][2],2)
-        diff = sqrt(field0+field1+field2)
+        result = ((abs(current[which][0]-prev[which][0]) <= acceptdiff) and (abs(current[which][1]-prev[which][1]) <= acceptdiff) and (abs(current[which][2]-prev[which][2]) <= acceptdiff))
     except:
-        return False
-    return ( diff.real <= acceptdiff )
+        result = False
+    return result
 
-def similarity(collection_name):
+def similarity(collection_name,factor):
     simmresult=[]
     previtem=[]
-    simornot = collection_name.find().sort(SIMILARITYFACTOR,DESCENDING)
+    # simornot = collection_name.find().sort(SIMILARITYFACTOR,DESCENDING)
+    simornot = collection_name.find().sort(SIMILARITYFIELD,DESCENDING)
     for nextitem in simornot:
-        if comparetriple(previtem,nextitem,SIMILARITYFIELD,SIMILARITYSCALE):
+        if comparetriple(previtem,nextitem,SIMILARITYFIELD,factor):
             simmroot['similar'].append(nextitem['_id'])
         else:
             try:
@@ -98,10 +96,10 @@ def similarity(collection_name):
         pass
     return simmresult
 
-def simCollRecreate():
+def simCollRecreate(factor):
     dbname = get_database()
     collection_name = dbname[PHOTOSCOLL]
-    items2 = similarity(collection_name)
+    items2 = similarity(collection_name,factor)
     dbname.drop_collection(SIMILARCOLL)
     collection_name2 = dbname[SIMILARCOLL]
     collection_name2.insert_many(items2)
@@ -114,5 +112,6 @@ def photosCollRecreate():
     collection_name.create_index([(SIMILARITYFIELD, 1)])
     collection_name.create_index([(SIMILARITYFACTOR, 1)])
 
-photosCollRecreate()
-simCollRecreate()
+if __name__ == '__main__':
+    photosCollRecreate()
+    simCollRecreate(SIMILARITYSCALE)

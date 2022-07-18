@@ -3,6 +3,9 @@
     <link rel="stylesheet" href='/static/css/main.css' />
   </head>
   <body>
+    <form id="similarity" action="/" method="post">
+      <button type="submit" form="similarity">Recalculate similarity factor?</button>
+    </form>
     <h1>Doubled pictures</h1>
     <div class="folders">
       <h2>Folders which photos were found</h2>
@@ -68,6 +71,7 @@
               {% else %}
                 <p class="copied">-</p>
               {% endif %}
+              <br><p>{{photocell.Stddev}}</p><br>
           </td>
         {% endfor %}
         </form>
