@@ -8,13 +8,9 @@ ROOTDIR = '/'
 # ROOTDIR = Path.home()
 PHOTOSCOLL= 'photos'
 SIMILARCOLL = 'similars'
-# SIMILARITYFIELD = 'Stddev'
 SIMILARITYFIELD = 'Mean'
-SIMILARITYFACTOR = 'sVCTR'
-SIMILARITYSCALE = 0.4
-
-#STDDEVCONST = 'Stddev'
-#MEANCONST = 'Mean'
+CONTRASIMFIELD = 'Stddev'
+SIMILARITYSCALE = 5
 
 def get_database():
     from pymongo import MongoClient

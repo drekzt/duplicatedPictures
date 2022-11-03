@@ -22,6 +22,10 @@ def createstructure():
     return intstructure
 
 @app.route('/')
+def configuratinpage():
+    return redirect('/doubled')
+
+@app.route('/doubled')
 def index():
     toshow = structure[0:99]
     folderlist = get_pathes_from_structure(toshow, len(structure) )

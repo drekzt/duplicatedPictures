@@ -3,7 +3,8 @@
     <link rel="stylesheet" href='/static/css/main.css' />
   </head>
   <body>
-    <form id="similarity" action="/" method="post">
+    <form id="similarity" action="/recalculate" method="post">
+      <input type="number" id="factor" name="factor">
       <button type="submit" form="similarity">Recalculate similarity factor?</button>
     </form>
     <h1>Doubled pictures</h1>
@@ -71,7 +72,8 @@
               {% else %}
                 <p class="copied">-</p>
               {% endif %}
-              <br><p>{{photocell.Stddev}}</p><br>
+              <br><p>Mean: {{photocell.Mean}}</p><br>
+              <br><p>Dev: {{photocell.Stddev}}</p><br>
           </td>
         {% endfor %}
         </form>
